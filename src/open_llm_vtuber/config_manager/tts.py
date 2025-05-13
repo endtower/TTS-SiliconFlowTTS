@@ -304,10 +304,9 @@ class SherpaOnnxTTSConfig(I18nMixin):
 class SiliconFlowTTSConfig(I18nMixin):
     """Configuration for SiliconFlow TTS."""
 
-    # 原配置字段别名错误（url -> api_url）
     api_url: str = Field(
         "https://api.siliconflow.cn/v1/audio/speech", alias="api_url"
-    )  # 修复字段别名
+    )  
     api_key: str = Field(
         "Bearer sk-pudrpldoifoanxcrdsbobzzjaihlyuzxrryskdultvjdpaoq", alias="api_key"
     )
@@ -316,7 +315,7 @@ class SiliconFlowTTSConfig(I18nMixin):
         "speech:Dreamflowers:5bdstvc39i:xkqldnpasqmoqbakubom", alias="default_voice"
     )
     sample_rate: int = Field(32000, alias="sample_rate")
-    response_format: str = Field("mp3", alias="response_format")  # 新增字段
+    response_format: str = Field("mp3", alias="response_format")  
     stream: bool = Field(True, alias="stream")
     speed: float = Field(1, alias="speed")
     gain: int = Field(0, alias="gain")
@@ -361,7 +360,7 @@ class TTSConfig(I18nMixin):
         "gpt_sovits_tts",
         "fish_api_tts",
         "sherpa_onnx_tts",
-        "siliconflow_tts",  # 添加新的模型选项
+        "siliconflow_tts",  
     ] = Field(..., alias="tts_model")
 
     azure_tts: Optional[AzureTTSConfig] = Field(None, alias="azure_tts")
