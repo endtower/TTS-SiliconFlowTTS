@@ -1,54 +1,136 @@
-from gradio_client import Client, handle_file
-from loguru import logger
+from typing import Type
 from .tts_interface import TTSInterface
+from loguru import logger
 
 
-class TTSEngine(TTSInterface):
-    def __init__(
-        self,
-        client_url="http://127.0.0.1:50000/",
-        mode_checkbox_group="预训练音色",
-        sft_dropdown="中文女",
-        prompt_text="",
-        prompt_wav_upload_url="https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
-        prompt_wav_record_url="https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
-        instruct_text="",
-        stream=False,
-        seed=0,
-        speed=1.0,
-        api_name="/generate_audio",
-    ):
-        self.client = Client(client_url)
+class TTSFactory:
+    @staticmethod
+    def get_tts_engine(engine_type, **kwargs) -> Type[TTSInterface]:
+        if engine_type == "azure_tts":
+            from .azure_tts import TTSEngine as AzureTTSEngine
 
-        self.mode_checkbox_group = mode_checkbox_group
-        self.sft_dropdown = sft_dropdown
-        self.prompt_text = prompt_text
-        self.prompt_wav_upload = handle_file(prompt_wav_upload_url)
-        self.prompt_wav_record = handle_file(prompt_wav_record_url)
-        self.instruct_text = instruct_text
-        self.stream = stream
-        self.seed = seed
-        self.speed = speed
-        self.api_name = api_name
+            return AzureTTSEngine(
+                kwargs.get("api_key"),
+                kwargs.get("region"),
+                kwargs.get("voice"),
+                kwargs.get("pitch"),
+                kwargs.get("rate"),
+            )
+        elif engine_type == "bark_tts":
+            from .bark_tts import TTSEngine as BarkTTSEngine
 
-    def generate_audio(self, text, file_name_no_ext=None):
-        if file_name_no_ext is not None:
-            logger.warning(
-                "Warning: customizing the temp file name with file_name_no_ext is not supported by cosyvoice2TTS and will be ignored."
+            return BarkTTSEngine(kwargs.get("voice"))
+        elif engine_type == "edge_tts":
+            from .edge_tts import TTSEngine as EdgeTTSEngine
+
+            return EdgeTTSEngine(kwargs.get("voice"))
+        elif engine_type == "pyttsx3_tts":
+            from .pyttsx3_tts import TTSEngine as Pyttsx3TTSEngine
+
+            return Pyttsx3TTSEngine()
+        elif engine_type == "cosyvoice_tts":
+            from .cosyvoice_tts import TTSEngine as CosyvoiceTTSEngine
+
+            return CosyvoiceTTSEngine(
+                client_url=kwargs.get("client_url"),
+                mode_checkbox_group=kwargs.get("mode_checkbox_group"),
+                sft_dropdown=kwargs.get("sft_dropdown"),
+                prompt_text=kwargs.get("prompt_text"),
+                prompt_wav_upload_url=kwargs.get("prompt_wav_upload_url"),
+                prompt_wav_record_url=kwargs.get("prompt_wav_record_url"),
+                instruct_text=kwargs.get("instruct_text"),
+                seed=kwargs.get("seed"),
+                api_name=kwargs.get("api_name"),
+            )
+        elif engine_type == "cosyvoice2_tts":
+            from .cosyvoice2_tts import TTSEngine as Cosyvoice2TTSEngine
+
+            return Cosyvoice2TTSEngine(
+                client_url=kwargs.get("client_url"),
+                mode_checkbox_group=kwargs.get("mode_checkbox_group"),
+                sft_dropdown=kwargs.get("sft_dropdown"),
+                prompt_text=kwargs.get("prompt_text"),
+                prompt_wav_upload_url=kwargs.get("prompt_wav_upload_url"),
+                prompt_wav_record_url=kwargs.get("prompt_wav_record_url"),
+                instruct_text=kwargs.get("instruct_text"),
+                stream=kwargs.get("stream"),
+                seed=kwargs.get("seed"),
+                speed=kwargs.get("speed"),
+                api_name=kwargs.get("api_name"),
+            )
+        elif engine_type == "melo_tts":
+            from .melo_tts import TTSEngine as MeloTTSEngine
+
+            return MeloTTSEngine(
+                speaker=kwargs.get("speaker"),
+                language=kwargs.get("language"),
+                device=kwargs.get("device"),
+                speed=kwargs.get("speed"),
+            )
+        elif engine_type == "x_tts":
+            from .x_tts import TTSEngine as XTTSEngine
+
+            return XTTSEngine(
+                api_url=kwargs.get("api_url"),
+                speaker_wav=kwargs.get("speaker_wav"),
+                language=kwargs.get("language"),
+            )
+        elif engine_type == "gpt_sovits_tts":
+            from .gpt_sovits_tts import TTSEngine as GSVEngine
+
+            return GSVEngine(
+                api_url=kwargs.get("api_url"),
+                text_lang=kwargs.get("text_lang"),
+                ref_audio_path=kwargs.get("ref_audio_path"),
+                prompt_lang=kwargs.get("prompt_lang"),
+                prompt_text=kwargs.get("prompt_text"),
+                text_split_method=kwargs.get("text_split_method"),
+                batch_size=kwargs.get("batch_size"),
+                media_type=kwargs.get("media_type"),
+                streaming_mode=kwargs.get("streaming_mode"),
+            )
+        elif engine_type == "siliconflow_tts":
+            from .siliconflow_tts import SiliconFlowTTS
+
+            return SiliconFlowTTS(
+                api_url=kwargs.get("api_url"),  # 原参数名 url -> api_url
+                api_key=kwargs.get("api_key"),
+                default_model=kwargs.get("default_model"),
+                default_voice=kwargs.get("default_voice"),
+                sample_rate=kwargs.get("sample_rate"),
+                response_format=kwargs.get("response_format"),  # 新增参数
+                stream=kwargs.get("stream"),
+                speed=kwargs.get("speed"),
+                gain=kwargs.get("gain"),
+            )
+        elif engine_type == "coqui_tts":
+            from .coqui_tts import TTSEngine as CoquiTTSEngine
+
+            return CoquiTTSEngine(
+                model_name=kwargs.get("model_name"),
+                speaker_wav=kwargs.get("speaker_wav"),
+                language=kwargs.get("language"),
+                device=kwargs.get("device"),
             )
 
-        result_wav_path = self.client.predict(
-            tts_text=text,
-            mode_checkbox_group=self.mode_checkbox_group,
-            sft_dropdown=self.sft_dropdown,
-            prompt_text=self.prompt_text,
-            prompt_wav_upload=self.prompt_wav_upload,
-            prompt_wav_record=self.prompt_wav_record,
-            instruct_text=self.instruct_text,
-            stream=self.stream,
-            seed=self.seed,
-            speed=self.speed,
-            api_name=self.api_name,
-        )
+        elif engine_type == "fish_api_tts":
+            from .fish_api_tts import TTSEngine as FishAPITTSEngine
 
-        return result_wav_path
+            return FishAPITTSEngine(
+                api_key=kwargs.get("api_key"),
+                reference_id=kwargs.get("reference_id"),
+                latency=kwargs.get("latency"),
+                base_url=kwargs.get("base_url"),
+            )
+        elif engine_type == "sherpa_onnx_tts":
+            from .sherpa_onnx_tts import TTSEngine as SherpaOnnxTTSEngine
+
+            return SherpaOnnxTTSEngine(**kwargs)
+
+        else:
+            raise ValueError(f"Unknown TTS engine type: {engine_type}")
+
+
+# Example usage:
+# tts_engine = TTSFactory.get_tts_engine("azure", api_key="your_api_key", region="your_region", voice="your_voice")
+# tts_engine.speak("Hello world")
