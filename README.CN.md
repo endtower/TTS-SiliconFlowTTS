@@ -19,6 +19,8 @@
 
 [使用文档](https://open-llm-vtuber.github.io/docs/quick-start) | | [![项目路线图](https://img.shields.io/badge/项目路线图-GitHub_Project-yellow)](https://github.com/orgs/Open-LLM-VTuber/projects/2)
 
+<a href="https://trendshift.io/repositories/12358" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12358" alt="t41372%2FOpen-LLM-VTuber | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+
 </h3>
 
 > [常见问题文档](https://docs.qq.com/pdf/DTFZGQXdTUXhIYWRq)
@@ -111,6 +113,9 @@
 然而，通过ModelScope或Hugging Face下载的模型可能也存在于`MODELSCOPE_CACHE`或`HF_HOME`中。虽然我们尽量将它们保存在项目的`models`目录中，但再次检查也无妨。
 
 查看安装指南中，你所安装但可能不再需要的任何额外工具，例如`uv`、`ffmpeg`或`deeplx`。
+
+## 🤗 想为项目做贡献?
+可以看看 [开发指南](https://docs.llmvtuber.com/docs/development-guide/overview).
 
 # 🎉🎉🎉 相关项目
 
