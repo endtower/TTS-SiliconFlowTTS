@@ -1,6 +1,5 @@
 from typing import Type
 from .tts_interface import TTSInterface
-from loguru import logger
 
 
 class TTSFactory:
