@@ -1,5 +1,10 @@
 from typing import Type
 from .tts_interface import TTSInterface
+import logging
+
+# 配置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class TTSFactory:
@@ -88,7 +93,20 @@ class TTSFactory:
                 media_type=kwargs.get("media_type"),
                 streaming_mode=kwargs.get("streaming_mode"),
             )
+        elif engine_type == "siliconflow_tts":
+            from .siliconflow_tts import SiliconFlowTTS
 
+            return SiliconFlowTTS(
+                api_url=kwargs.get("api_url"),  # 原参数名 url -> api_url
+                api_key=kwargs.get("api_key"),
+                default_model=kwargs.get("default_model"),
+                default_voice=kwargs.get("default_voice"),
+                sample_rate=kwargs.get("sample_rate"),
+                response_format=kwargs.get("response_format"),  # 新增参数
+                stream=kwargs.get("stream"),
+                speed=kwargs.get("speed"),
+                gain=kwargs.get("gain"),
+            )
         elif engine_type == "coqui_tts":
             from .coqui_tts import TTSEngine as CoquiTTSEngine
 

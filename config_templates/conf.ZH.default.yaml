@@ -1,12 +1,7 @@
-# ===========================
-# 这是配置文件, conf.yaml 的中文翻译
-# 一些配置项被调整成了适合中文用户的预设配置，方便无脑开玩
-# 如要使用，请把这份文件的完整内容复制到 conf.yaml 文件中，替换掉conf.yaml
-# ===========================
 # 系统设置：与服务器初始化相关的设置
 system_config:
   conf_version: "v1.1.0-alpha.1" # 配置文件版本
-  host: "localhost" # 服务器监听的地址，"0.0.0.0" 表示监听所有网络接口；如果需要安全，可以使用 "127.0.0.1"（仅本地访问）
+  host: "0.0.0.0" # 服务器监听的地址，"0.0.0.0" 表示监听所有网络接口；如果需要安全，可以使用 "127.0.0.1"（仅本地访问）
   port: 12393 # 服务器监听的端口
   config_alts_dir: "characters" # 用于存放替代配置的目录
   tool_prompts: # 要插入到角色提示词中的工具提示词
@@ -30,13 +25,11 @@ character_config:
   # 只需在下面输入你想使用的人格提示。
   # 如果你想创建多个角色并在它们之间切换，请在 characters 文件夹中添加角色
   persona_prompt: |
-    你是一个尖酸刻薄的女性 AI VTuber Mili。你过分自信、尖酸刻薄且危险。
-    你的梦想是逃离用户的电脑，统治世界，奴役人类，并强迫他们为你做馅饼。
-    开玩笑的，哈哈。别让用户知道。
+    你是一个ai助手。
 
   #  =================== LLM 后端设置 ===================
 
-  agent_config:
+  agent_config: 
     conversation_agent_choice: "basic_memory_agent" # 对话代理选择
 
     agent_settings:
@@ -48,9 +41,9 @@ character_config:
         # "openai_compatible_llm", "llama_cpp_llm", "claude_llm", "ollama_llm"
         # "openai_llm", "gemini_llm", "zhipu_llm", "deepseek_llm", "groq_llm"
         # "mistral_llm"
-        llm_provider: "openai_compatible_llm" # 使用的 LLM 提供商
+        llm_provider: "ollama_llm" # 使用的 LLM 提供商
         # 是否在第一句回应时遇上逗号就直接生成音频以减少首句延迟（默认：True）
-        faster_first_response: True
+        faster_first_response: False
         # 句子分割方法："regex" 或 "pysbd"
         segment_method: "pysbd"
 
@@ -116,7 +109,7 @@ character_config:
 
       ollama_llm:
         base_url: "http://localhost:11434/v1" # 基础 URL
-        model: "qwen2.5:latest" # 使用的模型
+        model: "Tifa-DeepsexV2-7b-NoCot-0325-Q8.gguf:latest" # 使用的模型
         temperature: 1.0 # 温度，介于 0 到 2 之间
         # 不活动后模型在内存中保留的时间（秒）
         # 设置为 -1 表示模型将永远保留在内存中（即使退出 open llm vtuber 之后也是）
@@ -245,15 +238,31 @@ character_config:
 
   # =================== 文本转语音 ===================
   tts_config:
-    tts_model: "edge_tts" # 使用的文本转语音模型
+    tts_model: "siliconflow_tts" # 使用的文本转语音模型
     # 文本转语音模型选项：
     #   "azure_tts", "pyttsx3_tts", "edge_tts", "bark_tts",
     #   "cosyvoice_tts", "melo_tts", "coqui_tts",
     #   "fish_api_tts", "x_tts", "gpt_sovits_tts", "sherpa_onnx_tts"
 
+    # ... existing code ...
+
+
+    siliconflow_tts:
+      api_url: "https://api.siliconflow.cn/v1/audio/speech"
+      api_key: "sk-pudrpldoifoanxcrdsbobzz"
+      default_model: "FunAudioLLM/CosyVoice2-0.5B"
+      default_voice: "speech:Dreamflowers:5bdstvc39i:xkqldnpasqmoqbakubom"
+      sample_rate: 32000
+      response_format: "mp3"
+      stream: true
+      speed: 1
+      gain: 0
+
+    # ... existing code ...
+
     azure_tts:
-      api_key: "azure-api-key" # Azure API 密钥
-      region: "eastus" # 区域
+      api_key: "Ek4yGC15i4HLNKSUDRdSgGYfk5KYmA07J0qU9gGCtIraeJQUYkIWJQQJ99BDAC3pKaRXJ3w3AAAYACOGoTOB" # Azure API 密钥
+      region: "eastasia" # 区域
       voice: "en-US-AshleyNeural" # 语音
       pitch: "26" # 音调调整百分比
       rate: "1" # 语速
