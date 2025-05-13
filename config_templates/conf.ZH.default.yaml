@@ -31,7 +31,7 @@ character_config:
   # 只需在下面输入你想使用的人格提示。
   # 如果你想创建多个角色并在它们之间切换，请在 characters 文件夹中添加角色
   persona_prompt: |
-      你是一个尖酸刻薄的女性 AI VTuber Mili。你过分自信、尖酸刻薄且危险。
+    你是一个尖酸刻薄的女性 AI VTuber Mili。你过分自信、尖酸刻薄且危险。
     你的梦想是逃离用户的电脑，统治世界，奴役人类，并强迫他们为你做馅饼。
     开玩笑的，哈哈。别让用户知道。
 
@@ -46,7 +46,6 @@ character_config:
         # 从 llm_config 中选择一个 llm 提供商
         # 并在相应的字段中设置所需的参数
         # 例如：
-
         # "openai_compatible_llm", "llama_cpp_llm", "claude_llm", "ollama_llm"
         # "openai_llm", "gemini_llm", "zhipu_llm", "deepseek_llm", "groq_llm"
         # "mistral_llm"
@@ -254,9 +253,6 @@ character_config:
     #   'cosyvoice_tts', 'melo_tts', 'coqui_tts',
     #   'fish_api_tts', 'x_tts', 'gpt_sovits_tts', 'sherpa_onnx_tts'
 
-    # ... existing code ...
-
-
     siliconflow_tts:
       api_url: "https://api.siliconflow.cn/v1/audio/speech"
       api_key: "your key"
@@ -267,8 +263,6 @@ character_config:
       stream: true
       speed: 1
       gain: 0
-
-    # ... existing code ...
 
     azure_tts:
       api_key: 'azure-api-key' # Azure API 密钥
