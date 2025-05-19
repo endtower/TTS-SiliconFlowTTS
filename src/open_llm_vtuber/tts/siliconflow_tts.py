@@ -47,12 +47,12 @@ class SiliconFlowTTS(TTSInterface):
 
         try:
             if self.api_url is None:
-                logger.error("API URL 未正确配置，请检查配置文件。")
+                logger.error("API URL 未正确配置，请检查配置文件。The configuration is incorrect. Please check the configuration file.")
                 return ""
             response = requests.request(
                 "POST", self.api_url, json=payload, headers=headers
             )
-            response.raise_for_status()  # 检查响应状态码
+            response.raise_for_status()  # Check the response status code
             with open(cache_file, "wb") as f:
                 f.write(response.content)
             logger.info(f"成功生成音频文件: {cache_file}")
